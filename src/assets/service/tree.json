@@ -1,0 +1,230 @@
+{
+    "errCode": 0,
+    "msg": "ok",
+    "data": {
+        "L1": [
+            {
+                "code": "OplanModuleData_warehouse",
+                "name": "数据仓库",
+                "prerequisite": "",
+                "select": 1
+            },
+            {
+                "code": "OplanModuleDistribution_network_planning",
+                "name": "配网规划",
+                "prerequisite": "",
+                "select": 1
+            },
+            {
+                "code": "OplanModuleEnergy_economy",
+                "name": "能源经济",
+                "prerequisite": "",
+                "select": 1
+            },
+            {
+                "code": "OplanModuleEngineering_construction",
+                "name": "工程建设",
+                "prerequisite": "",
+                "select": 1
+            },
+            {
+                "code": "OplanModuleLoad_forecast",
+                "name": "负荷预测",
+                "prerequisite": "",
+                "select": 1
+            },
+            {
+                "code": "OplanModuleMain_network_planning",
+                "name": "主网规划",
+                "prerequisite": "",
+                "select": 1
+            },
+            {
+                "code": "OplanModuleMain_page",
+                "name": "我的主页",
+                "prerequisite": "",
+                "select": 1
+            },
+            {
+                "code": "OplanModuleNews_info",
+                "name": "新闻资讯",
+                "prerequisite": "",
+                "select": 1
+            },
+            {
+                "code": "OplanModuleOsys",
+                "name": "系统管理",
+                "prerequisite": "",
+                "select": 1
+            }
+        ],
+        "L2": {
+            "OplanModuleLoad_forecast": [
+                {
+                    "code": "OplanLoad_forecastLoadAnalysis",
+                    "name": "负荷分析",
+                    "prerequisite": "",
+                    "select": 1
+                },
+                {
+                    "code": "OplanLoad_forecastLoadClassification",
+                    "name": "负荷分类",
+                    "prerequisite": "",
+                    "select": 1
+                },
+                {
+                    "code": "OplanLoad_forecastLoadData",
+                    "name": "负荷数据",
+                    "prerequisite": "",
+                    "select": 1
+                },
+                {
+                    "code": "OplanLoad_forecastLoadForecast",
+                    "name": "负荷预测",
+                    "prerequisite": "",
+                    "select": 1
+                },
+                {
+                    "code": "OplanLoad_forecastLoadManagement",
+                    "name": "负荷管理",
+                    "prerequisite": "",
+                    "select": 1
+                }
+            ],
+            "OplanModuleMain_network_planning": [
+                {
+                    "code": "OplanMain_network_planningDistributedAnalogOutput",
+                    "name": "分布式出力模拟",
+                    "prerequisite": "",
+                    "select": 1
+                },
+                {
+                    "code": "OplanMain_network_planningEconomicDispatchSimulation",
+                    "name": "经济调度模拟",
+                    "prerequisite": "",
+                    "select": 1
+                },
+                {
+                    "code": "OplanMain_network_planningExcellenciesSchedulingSimulation",
+                    "name": "三公调度模拟",
+                    "prerequisite": "",
+                    "select": 1
+                },
+                {
+                    "code": "OplanMain_network_planningManagementProgram",
+                    "name": "方案管理",
+                    "prerequisite": "",
+                    "select": 1
+                },
+                {
+                    "code": "OplanMain_network_planningMarketRunSimulation",
+                    "name": "市场运行模拟",
+                    "prerequisite": "",
+                    "select": 1
+                },
+                {
+                    "code": "OplanMain_network_planningNetworkPlanning",
+                    "name": "电网规划",
+                    "prerequisite": "",
+                    "select": 1
+                },
+                {
+                    "code": "OplanMain_network_planningNetworkSourceCollaborativePlanning",
+                    "name": "网源协同规划",
+                    "prerequisite": "",
+                    "select": 1
+                },
+                {
+                    "code": "OplanMain_network_planningNewProgram",
+                    "name": "新建方案",
+                    "prerequisite": "",
+                    "select": 1
+                },
+                {
+                    "code": "OplanMain_network_planningPowerPlanning",
+                    "name": "电源规划",
+                    "prerequisite": "",
+                    "select": 1
+                },
+                {
+                    "code": "OplanMain_network_planningPVSimulation",
+                    "name": "光伏模拟",
+                    "prerequisite": "",
+                    "select": 1
+                },
+                {
+                    "code": "OplanMain_network_planningSectionTransferSimulation",
+                    "name": "节调模拟",
+                    "prerequisite": "",
+                    "select": 1
+                },
+                {
+                    "code": "OplanMain_network_planningWindPowerSimulation",
+                    "name": "风电模拟",
+                    "prerequisite": "",
+                    "select": 1
+                }
+            ],
+            "OplanModuleNews_info": [
+                {
+                    "code": "OplanNews_infoInternalReports",
+                    "name": "内部报告",
+                    "prerequisite": "",
+                    "select": 1
+                },
+                {
+                    "code": "OplanNews_infoPlanningNews",
+                    "name": "规划新闻",
+                    "prerequisite": "",
+                    "select": 1
+                },
+                {
+                    "code": "OplanNews_infoPlanningReport",
+                    "name": "规划报告",
+                    "prerequisite": "",
+                    "select": 1
+                },
+                {
+                    "code": "OplanNews_infoRulesAndRegulations",
+                    "name": "规章制度",
+                    "prerequisite": "",
+                    "select": 1
+                }
+            ],
+            "OplanModuleOsys": [
+                {
+                    "code": "OplanOsysAuthorityRegister",
+                    "name": "权限模块",
+                    "prerequisite": "",
+                    "select": 1
+                },
+                {
+                    "code": "OplanOsysImport",
+                    "name": "导入权限",
+                    "prerequisite": "",
+                    "select": 1
+                },
+                {
+                    "code": "OplanOsysToken",
+                    "name": "Token获取",
+                    "prerequisite": "",
+                    "select": 1
+                },
+                {
+                    "code": "OplanOsysUnitUser",
+                    "name": "单位权限",
+                    "prerequisite": "",
+                    "select": 1
+                },
+                {
+                    "code": "OplanOsysUser",
+                    "name": "用户权限",
+                    "prerequisite": "",
+                    "select": 1
+                }
+            ]
+        },
+        "token": "eyJ0eXAiOiJPVCIsImFsZyI6IkhTMjU2In0.eyJpZCI6MTQsImV4cCI6MTU0MzMyMDc5NX0.ODc0YjFiMTE3NjM3NjM2NTJiODZkYzdhZGZmM2Q0NTIzNTM4OWE2NGYxNzg2ZTFkZjVhMDBhZmUwMzg4MDMyNA",
+        "refresh_token": "NNOe1etL1L9VDmprdtnxA6CV6GfPCdRX"
+    }
+}
