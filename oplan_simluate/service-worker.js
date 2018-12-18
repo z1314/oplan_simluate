@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "precache-manifest.d5626e3d6e3f990d239e2f9c7fe8f674.js"
+  "precache-manifest.b3e7dce862ceede3cdc17f7effca91de.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "oplan_simluate"});

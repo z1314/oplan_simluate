@@ -3,7 +3,7 @@ module.exports = {
   outputDir: "oplan_simluate",
   devServer: {
     proxy: {
-      "/oplanStatic": {
+      "/simluateStatic": {
         target: "http://22h8h80849.iask.in",
         ws: true,
         changeOrigin: true
@@ -11,6 +11,14 @@ module.exports = {
     }
   },
   pages: {
+    login: {
+      // page 的入口
+      entry: "src/views/login/login.js",
+      // 模板来源
+      template: "src/views/login/login.html",
+      // 在 dist/index.html 的输出
+      filename: "login.html"
+    },
     wpSimluate: {
       // page 的入口
       entry: "src/views/wpSimluate/wpSimluate.js",
