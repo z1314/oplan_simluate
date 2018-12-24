@@ -7,56 +7,80 @@
         <div class="b-wrap">
           <div class="input-item">
             <p>昵称</p>
-            <input type="text" placeholder="请输入昵称" v-model="nickname" @input="verifyFn('nickname')" />
-            <transition name="fade">
-              <div class="verify">
-                <Verify :success=1 :inputHint= hint.nickname></Verify>
-              </div>
-            </transition>
+            <input
+              type="text"
+              placeholder="请输入昵称"
+              v-model="nickname"
+              @input="verifyFn('nickname')"
+            />
+            <div class="verify"><Verify :hint="hint.nickname"></Verify></div>
           </div>
           <div class="input-item">
             <p>密码</p>
-            <input type="text" placeholder="请设置密码" v-model="password" @input="verifyFn('password')" />
-            <transition name="fade">
-              <div class="verify">
-                <Verify :success=1 :inputHint= hint.password></Verify>
-              </div>
-            </transition>
+            <input
+              type="text"
+              placeholder="请设置密码"
+              v-model="password"
+              @input="verifyFn('password')"
+            />
+            <div class="verify"><Verify :hint="hint.password"></Verify></div>
           </div>
           <div class="input-item">
             <p>手机号码</p>
-            <input type="text" placeholder="请输入手机号" v-model="phone" @input="verifyFn('phone')"/>
+            <input
+              type="text"
+              placeholder="请输入手机号"
+              v-model="phone"
+              @input="verifyFn('phone')"
+            />
             <transition name="fade">
-              <div class="verify">
-                <Verify :success=1 :inputHint= hint.phone></Verify>
-              </div>
+              <div class="verify"><Verify :hint="hint.phone"></Verify></div>
             </transition>
           </div>
           <div class="input-item">
             <p>验证码</p>
-            <input type="text" placeholder="请输入验证码" v-model="verifyCode" />
-            <button class="validate-btn">获取验证码</button>
+            <input
+              type="text"
+              placeholder="请输入验证码"
+              v-model="verifyCode"
+            />
+            <button
+              class="validate-btn"
+              :disabled="validateDis"
+              @click="get_verifyCode"
+            >
+              获取验证码
+            </button>
             <transition name="fade">
               <div class="verify">
-                <Verify :success=1 :inputHint= hint.verifyCode></Verify>
+                <Verify :hint="hint.verifyCode"></Verify>
               </div>
             </transition>
           </div>
           <div class="input-item">
             <p>企业名称</p>
-            <input type="text" placeholder="请输入企业名称" v-model="companyName" @input="verifyFn('companyName')" />
+            <input
+              type="text"
+              placeholder="请输入企业名称"
+              v-model="companyName"
+              @input="verifyFn('companyName')"
+            />
             <transition name="fade">
               <div class="verify">
-                <Verify :success=1 :inputHint= hint.companyName></Verify>
+                <Verify :hint="hint.companyName"></Verify>
               </div>
             </transition>
           </div>
           <div class="input-item">
             <p>邀请码</p>
-            <input type="text" placeholder="请输入体验邀请码" v-model="inviteCode" />
+            <input
+              type="text"
+              placeholder="请输入体验邀请码"
+              v-model="inviteCode"
+            />
             <transition name="fade">
               <div class="verify">
-                <Verify :success=1 :inputHint= hint.inviteCode></Verify>
+                <Verify :hint="hint.inviteCode"></Verify>
               </div>
             </transition>
           </div>
@@ -78,19 +102,38 @@ export default {
       verifyCode: null,
       companyName: null,
       inviteCode: null,
+      validateDis: true, //禁用验证码按钮
       hint: {
-        nickname: "",
-        password: null,
-        phone: "",
-        verifyCode: "验证码错误",
-        companyName: "仅支持中英文输入",
-        inviteCode: "激活码有误"
+        nickname: {
+          icon: -1,
+          msg: ""
+        },
+        password: {
+          icon: -1,
+          msg: ""
+        },
+        phone: {
+          icon: -1,
+          msg: ""
+        },
+        verifyCode: {
+          icon: -1,
+          msg: ""
+        },
+        companyName: {
+          icon: -1,
+          msg: ""
+        },
+        inviteCode: {
+          icon: -1,
+          msg: ""
+        }
       }
     };
   },
   computed: {
     theme() {
-      return this.$store.state.module_Theme.theme;
+      return this.$store.state.module_global.theme;
     }
   },
   watch: {
@@ -103,31 +146,64 @@ export default {
       this.styles.setProperty("--WrapH", val + "px");
       this.styles.setProperty("--DomH", val + "px");
     },
+    //获取邀请码
+    get_verifyCode() {
+      console.log(213);
+    },
+    //注册
+    registerFn() {},
+    //验证
     verifyFn(str) {
       switch (str) {
         //验证昵称
         case "nickname":
           if (/^[a-zA-Z\u4e00-\u9fa5]+$/.test(this.nickname)) {
-            this.hint.nickname = "";
+            this.hint.nickname.icon = 0;
+            this.hint.nickname.msg = "";
           } else {
-            this.hint.nickname = "仅支持中英文输入";
+            this.hint.nickname.icon = 1;
+            this.hint.nickname.msg = "仅支持中英文输入";
+          }
+          break;
+        //验证密码
+        case "password":
+          if (
+            /^(?![^a-zA-Z]+$)(?!\D+$)/.test(this.password) &&
+            this.password.length > 6 &&
+            this.password.length < 18
+          ) {
+            this.hint.password.icon = 0;
+            this.hint.password.msg = "";
+          } else if (!/^(?![^a-zA-Z]+$)(?!\D+$)/.test(this.password)) {
+            this.hint.password.icon = 1;
+            this.hint.password.msg = "只能包含字母与数字";
+          } else {
+            this.hint.password.icon = 1;
+            this.hint.password.msg = "长度需要在6-18位之间";
           }
           break;
         //验证手机号码
         case "phone":
           if (/^1[34578]\d{9}$/.test(this.phone)) {
-            this.hint.phone = "";
+            this.hint.phone.icon = 0;
+            this.hint.phone.msg = "";
             this.styles.setProperty("--btnColor", "rgba(255, 119, 62, 1)");
+            this.validateDis = false;
           } else {
-            this.hint.phone = "手机号码有误";
+            this.hint.phone.icon = 1;
+            this.hint.phone.msg = "请输入正确的手机号";
+            this.styles.setProperty("--btnColor", "rgba(203, 193, 189, 1)");
+            this.validateDis = true;
           }
           break;
         //验证企业名称
         case "companyName":
           if (/^[a-zA-Z\u4e00-\u9fa5]+$/.test(this.companyName)) {
-            this.hint.companyName = "";
+            this.hint.companyName.icon = 0;
+            this.hint.companyName.msg = "";
           } else {
-            this.hint.companyName = "仅支持中英文输入";
+            this.hint.companyName.icon = 1;
+            this.hint.companyName.msg = "仅支持中英文输入";
           }
           break;
       }
@@ -216,7 +292,8 @@ export default {
             height: 40px;
             border: none;
             outline: none;
-            text-align: center;
+            padding-left: 20px;
+            box-sizing: border-box;
             border-bottom: 1px solid rgba(255, 197, 127, 1);
             -web-kit-appearance: none;
             -moz-appearance: none;
@@ -237,7 +314,8 @@ export default {
             transition: all 2s;
             font-size: 12px;
           }
-          .fade-enter-active, .fade-leave-active {
+          .fade-enter-active,
+          .fade-leave-active {
             transition: opacity 0.5s;
           }
           .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
@@ -249,16 +327,16 @@ export default {
             width: 35%;
           }
           .validate-btn {
-            width: 20%;
+            width: 80px;
             height: 30px;
-            margin-left: 2%;
+            margin-top: 1%;
             border-width: 0px;
             border-radius: 25px;
             background: var(--btnColor);
             outline: none;
             cursor: pointer;
             color: #fff;
-            font-size: 14px;
+            font-size: 12px;
           }
         }
         .remember-code {

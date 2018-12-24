@@ -6,17 +6,35 @@
         <div class="t-wrap">重置登录密码</div>
         <div class="m-wrap">
           <div class="progress-item">
-            <i :class="{'iconfont': true, 'icon-zhengque1': progress.userHint==true,'icon-wait': progress.userHint==false}"></i>
+            <i
+              :class="{
+                iconfont: true,
+                'icon-zhengque1': progress.userHint == true,
+                'icon-wait': progress.userHint == false
+              }"
+            ></i>
             <p>账号验证</p>
           </div>
           <div class="line"></div>
           <div class="progress-item">
-            <i :class="{'iconfont':true,'icon-zhengque1' :progress.resetPass==true,'icon-wait': progress.resetPass==false}"></i>
+            <i
+              :class="{
+                iconfont: true,
+                'icon-zhengque1': progress.resetPass == true,
+                'icon-wait': progress.resetPass == false
+              }"
+            ></i>
             <p>重置密码</p>
           </div>
           <div class="line"></div>
           <div class="progress-item">
-            <i :class="{'iconfont':true,'icon-zhengque1':progress.resetSuccess==true,'icon-wait': progress.resetSuccess==false}"></i>
+            <i
+              :class="{
+                iconfont: true,
+                'icon-zhengque1': progress.resetSuccess == true,
+                'icon-wait': progress.resetSuccess == false
+              }"
+            ></i>
             <p>重置成功</p>
           </div>
         </div>
@@ -24,36 +42,49 @@
           <div class="userHint" v-show="progressFlag == 0">
             <div class="input-item">
               <p>手机号码</p>
-              <input type="text" placeholder="请输入手机号码" v-model="phone" @input="verifyFn" />
+              <input
+                type="text"
+                placeholder="请输入手机号码"
+                v-model="phone"
+                @input="verifyFn"
+              />
+              <div class="verify"><Verify :hint="hint.phone"></Verify></div>
             </div>
             <div class="input-item">
               <p>验证码</p>
-              <input type="text" placeholder="请输入验证码" v-model="password" />
-              <button class="validate-btn">获取验证码</button>
+              <input
+                type="text"
+                placeholder="请输入验证码"
+                v-model="password"
+              />
+              <button
+                class="validate-btn"
+                :disabled="validateDis"
+                @click="get_verifyCode"
+              >
+                {{ btnText }}
+              </button>
             </div>
-            <button class="apply-btn">下一步</button>
+            <button class="apply-btn" @click="userHintFn">下一步</button>
           </div>
           <div class="resetPass" v-show="progressFlag == 1">
             <div class="input-item">
               <p>新密码</p>
-              <input type="text" placeholder="请输入新密码" v-model="username" />
+              <input
+                type="text"
+                placeholder="请输入新密码"
+                v-model="username"
+              />
             </div>
             <div class="input-item">
               <p>确认密码</p>
               <input type="text" placeholder="请确认密码" v-model="password" />
             </div>
-            <button class="apply-btn">下一步</button>
+            <button class="apply-btn" @click="resetPassFn">下一步</button>
           </div>
           <div class="resetSuccess" v-show="progressFlag == 2">
-            <div class="input-item">
-              <p>新密码</p>
-              <input type="text" placeholder="请输入新密码" v-model="username" />
-            </div>
-            <div class="input-item">
-              <p>确认密码</p>
-              <input type="text" placeholder="请确认密码" v-model="password" />
-            </div>
-            <button class="apply-btn">下一步</button>
+            <p>设置成功，请牢记新密码</p>
+            <button class="apply-btn" @click="resetSuccessFn">完成</button>
           </div>
         </div>
       </div>
@@ -62,6 +93,7 @@
 </template>
 <script>
 import { changeTheme } from "../../assets/js/common/theme.js";
+import verify from "../../components/common/verify.vue";
 export default {
   data() {
     return {
@@ -73,13 +105,29 @@ export default {
         resetPass: false,
         resetSuccess: false
       },
+      validateDis: true, //禁用验证码
+      btnText: "获取验证码",
       styles: null,
-      progressFlag: 0
+      progressFlag: 0,
+      hint: {
+        nickname: {
+          icon: -1,
+          msg: ""
+        },
+        phone: {
+          icon: -1,
+          msg: ""
+        },
+        company_name: {
+          icon: -1,
+          msg: ""
+        }
+      }
     };
   },
   computed: {
     theme() {
-      return this.$store.state.module_Theme.theme;
+      return this.$store.state.module_global.theme;
     }
   },
   watch: {
@@ -92,20 +140,56 @@ export default {
       this.styles.setProperty("--WrapH", val + "px");
       this.styles.setProperty("--DomH", val + "px");
     },
+    //获取验证码
+    get_verifyCode() {
+      this.styles.setProperty("--btnColor", "rgba(203, 193, 189, 1)");
+      this.validateDis = true;
+      let i = 60;
+      let setInter = setInterval(() => {
+        if (i != 0) {
+          i = i - 1;
+          this.btnText = `${i}s后重发`;
+        } else {
+          this.styles.setProperty("--btnColor", "rgba(255, 119, 62, 1)");
+          this.validateDis = false;
+          this.btnText = "获取验证码";
+          clearInterval(setInter);
+        }
+      }, 1000);
+    },
+    //帐号验证
+    userHintFn() {
+      this.progressFlag = 1;
+      this.progress.resetPass = true;
+    },
+    //重置密码
+    resetPassFn() {
+      this.progressFlag = 2;
+      this.progress.resetSuccess = true;
+    },
+    resetSuccessFn() {
+      this.$router.replace("/login");
+    },
     verifyFn() {
-      console.log(213)
       if (/^1[34578]\d{9}$/.test(this.phone)) {
-        // this.hint.phone = "";
+        this.hint.phone.icon = 0;
+        this.hint.phone.msg = "";
         this.styles.setProperty("--btnColor", "rgba(255, 119, 62, 1)");
+        this.validateDis = false;
       } else {
+        this.hint.phone.icon = 1;
+        this.hint.phone.msg = "请输入正确的手机号";
         this.styles.setProperty("--btnColor", "rgba(203, 193, 189, 1)");
-        // this.hint.phone = "手机号码有误";
+        this.validateDis = true;
       }
     }
   },
   mounted() {
     this.styles = this.$el.style;
     this.styles.setProperty("--btnColor", "rgba(203, 193, 189, 1)");
+  },
+  components: {
+    Verify: verify
   }
 };
 </script>
@@ -122,6 +206,7 @@ export default {
     width: 60%;
     display: flex;
     margin-top: 20px;
+    position: relative;
     &:first-child {
       margin-top: 0;
     }
@@ -139,7 +224,8 @@ export default {
       height: 40px;
       border: none;
       outline: none;
-      text-align: center;
+      padding-left: 20px;
+      box-sizing: border-box;
       border-bottom: 1px solid rgba(255, 197, 127, 1);
       -web-kit-appearance: none;
       -moz-appearance: none;
@@ -149,6 +235,16 @@ export default {
     input:-webkit-autofill:focus {
       box-shadow: 0 0 0 60px #fff inset;
       -webkit-text-fill-color: #878787;
+    }
+    .verify {
+      position: absolute;
+      top: 0;
+      right: -30%;
+      width: 40%;
+      height: 40px;
+      line-height: 40px;
+      transition: all 2s;
+      font-size: 12px;
     }
   }
   .apply-btn {
@@ -266,7 +362,29 @@ export default {
           @include hint;
         }
         .resetSuccess {
-          @include hint;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          p {
+            font-size: 16px;
+            color: rgba(203, 193, 189, 1);
+            margin-bottom: 5%;
+          }
+          .apply-btn {
+            width: 18%;
+            height: 40px;
+            border-width: 0px;
+            border-radius: 25px;
+            margin-top: 39px;
+            background: rgba(255, 119, 62, 1);
+            outline: none;
+            cursor: pointer;
+            color: #fff;
+            font-size: 15px;
+          }
         }
       }
     }

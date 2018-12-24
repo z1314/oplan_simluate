@@ -1,8 +1,6 @@
 <template>
   <div id="login" class="login-wrap">
-    <div class="module">
-      <router-view />
-    </div>
+    <div class="module"><router-view /></div>
   </div>
 </template>
 <script>
@@ -18,10 +16,10 @@ export default {
   },
   computed: {
     theme() {
-      return this.$store.state.module_Theme.theme;
+      return this.$store.state.module_global.theme;
     },
     htmlHeight() {
-      return this.$store.state.module_Theme.htmlHeight;
+      return this.$store.state.module_global.htmlHeight;
     }
   },
   watch: {
@@ -55,16 +53,25 @@ export default {
     window.onresize = function() {
       _this.getwh(_this);
     };
-    this.changeHeight(this.$store.state.module_Theme.htmlHeight);
-    // this.$router.replace("/login");
+    this.changeHeight(this.$store.state.module_global.htmlHeight);
   }
 };
 </script>
 <style scoped lang="scss">
 @import "../../assets/css/reset.css";
 @import "../../assets/css/global";
+
+@media screen and (max-width: 1280px) {
+  .login-wrap {
+    width: 1152px;
+  }
+}
+@media screen and (min-width: 1280px) {
+  .login-wrap {
+    width: 100%;
+  }
+}
 .login-wrap {
-  width: 100%;
   height: var(--WrapH);
   font-family: "SourceHanSansSC-Medium";
   .module {

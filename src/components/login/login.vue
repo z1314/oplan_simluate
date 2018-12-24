@@ -9,25 +9,24 @@
       </div>
       <div class="b-wrap">
         <div class="input-item">
-          <input type="text" placeholder="请输入账号" v-model="username" @input="verifyFn" />
-          <transition name="fade">
-            <div class="verify" v-show="showVerify == 1">
-              <Verify :success=1 :inputHint= userHint></Verify>
-            </div>
-          </transition>
+          <input
+            type="text"
+            placeholder="请输入帐号"
+            v-model="username"
+            @input="verifyFn"
+          />
+          <div class="verify"><Verify :hint="hint.username"></Verify></div>
         </div>
         <div class="input-item">
           <input type="text" placeholder="请输入密码" v-model="password" />
-          <div class="verify" v-show="showVerify == 2">
-            <Verify :success=1 :inputHint= passHint></Verify>
-          </div>
+          <div class="verify"><Verify :hint="hint.password"></Verify></div>
         </div>
         <div class="remember-code">
-          <el-checkbox v-model="rememberCode">十天内免登陆</el-checkbox>
+          <el-checkbox v-model="rememberCode">十天内免登录</el-checkbox>
         </div>
         <button class="login-btn" @click="loginFn">登录</button>
         <div class="service-wrap">
-          <p @click="serviceFn(1)">注册账号</p>
+          <p @click="serviceFn(1)">注册帐号</p>
           <p @click="serviceFn(2)">申请产品试用</p>
           <p @click="serviceFn(3)">找回密码</p>
         </div>
@@ -38,21 +37,28 @@
 <script>
 import { changeTheme } from "../../assets/js/common/theme.js";
 import verify from "../../components/common/verify";
-import { get_token } from "../../assets/service/loginService.js";
+import { get_token, refresh_token } from "../../assets/service/loginService.js";
 export default {
   data() {
     return {
       username: null,
       password: null,
       rememberCode: false,
-      showVerify: 0,
-      userHint: "手机号有误",
-      passHint: "密码有误"
+      hint: {
+        username: {
+          icon: -1,
+          msg: ""
+        },
+        password: {
+          icon: -1,
+          msg: ""
+        }
+      }
     };
   },
   computed: {
     theme() {
-      return this.$store.state.module_Theme.theme;
+      return this.$store.state.module_global.theme;
     }
   },
   watch: {
@@ -79,24 +85,47 @@ export default {
           break;
       }
     },
+    // 验证帐号
     verifyFn() {
-      if (!/^1[34578]\d{9}$/.test(this.username)) {
-        this.showVerify = 1;
+      if (/^1[34578]\d{9}$/.test(this.username)) {
+        this.hint.username.icon = 0;
+        this.hint.username.msg = "";
       } else {
-        this.showVerify = -1;
+        this.hint.username.icon = 1;
+        this.hint.username.msg = "请输入正确的手机号";
       }
     },
+    //登录
     loginFn() {
-      get_token(this.username, this.password).then(res => {
-        if (res.errCode == 0) {
-          //登录成功
-        } else {
-          this.showVerify = 2;
+      if (this.hint.username.icon == 1) {
+        return;
+      } else {
+        get_token(this.username, this.password, this.rememberCode).then(res => {
+          if (res.err_code == 0) {
+            localStorage.setItem("userInfo", this.username);
+            console.log(this.$store.state.module_global.userInfo);
+            localStorage.setItem("token", res.data.token);
+            localStorage.setItem("refresh_token", res.data.refresh_token);
+            window.location.href = "http://localhost:8080/wpSimluate.html";
+          } else {
+            this.hint.password.icon = 1;
+            this.hint.password.msg = "密码错误";
+          }
+        });
+      }
+    }
+  },
+  mounted() {
+    let refreshToken = localStorage.getItem("refresh_token");
+    if (refreshToken) {
+      refresh_token(refreshToken).then(res => {
+        if (res.err_code == 0) {
+          window.location.href = "http://localhost:8080/wpSimluate.html";
         }
       });
     }
   },
-  components:{
+  components: {
     Verify: verify
   }
 };
@@ -156,8 +185,8 @@ export default {
         display: flex;
         justify-content: space-between;
         position: relative;
-        &:last-child {
-          margin-top: 10px;
+        &:first-child {
+          margin-bottom: 20px;
         }
         input {
           font-size: var(--FtSize_second);
@@ -165,7 +194,8 @@ export default {
           height: 40px;
           border: none;
           outline: none;
-          text-align: center;
+          padding-left: 20px;
+          box-sizing: border-box;
           border-bottom: 1px solid rgba(255, 197, 127, 1);
           -web-kit-appearance: none;
           -moz-appearance: none;
@@ -178,14 +208,15 @@ export default {
         }
         .verify {
           position: absolute;
-          top: 0;
-          right: -42%;
-          width: 40%;
+          top: 0%;
+          right: -100%;
+          width: 100%;
           height: 40px;
           line-height: 40px;
           transition: all 2s;
         }
-        .fade-enter-active, .fade-leave-active {
+        .fade-enter-active,
+        .fade-leave-active {
           transition: opacity 0.5s;
         }
         .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {

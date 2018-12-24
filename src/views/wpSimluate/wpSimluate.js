@@ -18,7 +18,14 @@ Vue.prototype.$axios = axios;
 Vue.prototype.$vuescrollConfig = {
   bar: {
     showDelay: 4000,
-    background: "rgba(255,119,62,1)"
+    background: "rgba(164, 150, 145, 1)",
+    keepShow: true,
+    snapping: {
+      enable: false,
+      width: 100,
+      height: 100
+    },
+    size: "8px"
   }
 };
 new Vue({

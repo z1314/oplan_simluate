@@ -3,11 +3,12 @@ import Vuex from "vuex";
 
 Vue.use(Vuex);
 
-let module_Theme = {
+let module_global = {
   state: {
     theme: "light",
     htmlWidth: null,
-    htmlHeight: 0
+    htmlHeight: 0,
+    userInfo: null
   },
   getters: {},
   mutations: {
@@ -23,12 +24,15 @@ let module_Theme = {
     },
     gethtmlHeight(state, val) {
       state.htmlHeight = val;
+    },
+    set_userInfo(state, val) {
+      state.userInfo = val;
     }
   },
   actions: {}
 };
 export default new Vuex.Store({
   modules: {
-    module_Theme: module_Theme
+    module_global: module_global
   }
 });

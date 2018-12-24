@@ -203,7 +203,7 @@ export {
   startAnimation,
   sliceTimeOutput,
   seriesline,
-  seriesdayChoose,
+  // seriesdayChoose,
   dayK,
   weekK,
   monthK,
