@@ -10,10 +10,12 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "css-loader": "^2.0.2",
     "echarts": "^4.1.0",
     "element-ui": "^2.4.6",
     "register-service-worker": "^1.5.2",
     "vue": "^2.5.17",
+    "vue-loader": "^15.4.2",
     "vue-router": "^3.0.1",
     "vuescroll": "^4.9.0-beta.8",
     "vuex": "^3.0.1"
@@ -32,7 +34,7 @@
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0-0",
     "node-sass": "^4.9.0",
-    "sass-loader": "^7.0.1",
+    "sass-loader": "^7.1.0",
     "vue-template-compiler": "^2.5.17"
   }
 }
